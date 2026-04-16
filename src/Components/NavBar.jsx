@@ -6,7 +6,7 @@ function NavBar() {
 
     return (
         <>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ borderBottom: "grey solid 2px" }}>
                 <div className="container-fluid">
                     <button
                         className="navbar-toggler"
@@ -17,6 +17,7 @@ function NavBar() {
                     </button>
 
                     <div className={`collapse navbar-collapse ${openNav ? "show" : ""}`}>
+                        <span style={{ fontWeight: "bolder" }}>Gestion_Client</span>
                         <ul className="navbar-nav me-auto">
                             <li className="nav-item">
                                 <Link className="nav-link" to="/">Accueil</Link>
@@ -32,7 +33,7 @@ function NavBar() {
                         </ul>
                     </div>
                 </div>
-            </nav>
+            </nav >
         </>
     );
 }

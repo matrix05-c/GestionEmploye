@@ -6,7 +6,7 @@ function MainLayout() {
         <div>
             <NavBar />
 
-            <main style={{ backgroundColor: "red" }}>
+            <main style={{ marginTop: "20px" }}>
                 <Outlet />
             </main>
         </div>
