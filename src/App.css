@@ -1,0 +1,85 @@
+html,
+body,
+#root {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #16181d;
+    position: relative;
+    z-index: 1;
+}
+
+.custom-table th,
+.custom-table td {
+    background-color: #16181d;
+    color: white;
+}
+
+/* background-color: #212529; */
+
+.stars-background {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: #16181d;
+    overflow: hidden;
+}
+
+.app-content {
+    position: relative;
+    z-index: 1;
+}
+
+.stars-background::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(grey 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-repeat: repeat;
+    height: 200%;
+    animation: moveStars 20s linear infinite;
+}
+
+.stars-background::after {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    box-shadow:
+        100px 200px white,
+        300px 400px white,
+        500px 100px white,
+        700px 350px white,
+        900px 150px white;
+    animation: moveStars 20s linear infinite;
+}
+
+@keyframes moveStars {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-300px);
+    }
+}
+
+.active-link {
+    position: relative;
+    color: #198754 !important;
+}
+
+
+.active-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    background-color: #198754;
+    border-radius: 2px;
+}
