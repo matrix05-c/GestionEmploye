@@ -25,7 +25,7 @@ function App() {
             {/* <Route path='liste' element={<Liste />} /> */}
             <Route path='bilan' element={<Bilan />} />
             <Route path='AddClient' element={<AjoutClient />} />
-            <Route path='UpdateClient' element={<UpdateClient />} />
+            <Route path='UpdateClient/:id' element={<UpdateClient />} />
 
           </Route>
 

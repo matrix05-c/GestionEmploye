@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
+import api from "../api/axios";
 
 function NavBar() {
     const [openNav, setOpenNav] = useState(false);
 
     const navigate = useNavigate()
     const deconnexion = () => {
-        navigate('/')
+        api.get("http://localhost:8080/logout")
+            .then(response => {
+                navigate('/')
+
+            }).catch(error => console.log("failed to logout"))
     }
     return (
         <>
@@ -41,7 +46,7 @@ function NavBar() {
 
                         {/* <span style={{ fontWeight: "bolder" }} className="text-white me-2 ms-auto">Gestion_Client</span> */}
 
-                        <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "25px" }}></i>
+                        <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "25px", cursor: "pointer" }}></i>
 
                     </div>
                 </div>

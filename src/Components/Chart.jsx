@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
+import api from "../api/axios";
 
 const data = [
     { name: "A", valeur: 10 },
@@ -7,17 +8,35 @@ const data = [
 ];
 
 function Chart() {
-    const data = {
-        total: 125000,
-        min: 5000,
-        max: 45000
-    };
+
+    const [data, setData] = useState({
+        total: '',
+        min: '',
+        max: ''
+    });
+
+    const getData = () => {
+        api.get("http://localhost:8080/getDashboard")
+            .then(response => {
+
+                setData({
+                    total: response.data.total,
+                    min: response.data.min,
+                    max: response.data.max
+                })
+
+            }).catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        getData()
+    }, [])
 
     const chartData = useMemo(() => [
         { name: "Total", valeur: data.total, couleur: "#0d6efd" },
         { name: "Min", valeur: data.min, couleur: "#dc3545" },
         { name: "Max", valeur: data.max, couleur: "#198754" }
-    ], []);
+    ], [data]);
     return (
         <div className="container mt-4">
             {/* CARDS */}
@@ -47,12 +66,12 @@ function Chart() {
             </div>
 
             {/* CHART */}
-            <div className="card shadow-sm p-4 bg-dark" style={{border: "white solid 2px"}}>
+            <div className="card shadow-sm p-4 bg-dark" style={{ border: "white solid 2px" }}>
                 <h5 className="mb-3 text-white">Analyse des soldes</h5>
 
                 <ResponsiveContainer width="100%" height={300} >
                     <BarChart data={chartData}>
-                        <XAxis dataKey="name" stroke="white"/>
+                        <XAxis dataKey="name" stroke="white" />
                         <YAxis stroke="white" />
                         <Tooltip />
 
