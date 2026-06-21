@@ -49,8 +49,10 @@ function Table() {
             ).catch(error => console.log(error))
     }
 
+    const [typeCompte, setTypeCompte] = useState('COURANT')
+
     const getAllClient = () => {
-        api.get("http://localhost:8080/allClient")
+        api.get("http://localhost:8080/getAllParType/" + typeCompte)
             .then(Response => {
                 setClients(Response.data)
             })
@@ -71,7 +73,7 @@ function Table() {
     const [nbclients, setNbClients] = useState(0);
 
     const countAllClient = () => {
-        api.get("http://localhost:8080/countAllClient")
+        api.get("http://localhost:8080/countAllClient?type=" + typeCompte)
             .then(response => setNbClients(response.data))
             .catch(error => console.log(error))
     }
@@ -91,6 +93,14 @@ function Table() {
         return { texte: "", couleur: "black" };
 
     }
+
+    useEffect(() => {
+        getAllClient();
+        countAllClient();
+
+        console.log(typeCompte)
+    }, [typeCompte])
+
 
     return (
         <>
@@ -113,6 +123,18 @@ function Table() {
                 </div>
 
             </div>
+
+            <select className="form-select w-25 mx-3 mb-3" style={{ minWidth: '240px' }} value={typeCompte}
+                onChange={(e) => { setTypeCompte(e.target.value) }}>
+                <option value="COURANT" defaultValue>
+                    Liste des compte Courant
+                </option>
+
+                <option value="EPARGNE">
+                    List des compte EPARGNE
+                </option>
+            </select>
+
             <p className="text-white ps-5 small fw-bold ms-2">nombre des clients : {nbclients}</p>
 
             <table className="table table-hovered align-middle text-center table-bordered custom-table">

@@ -21,6 +21,10 @@ public class ClientService2 {
 
     }
 
+    public List<Client> getAllClientByTypeCount(Client.TypeCompte type) {
+        return client2Repository.findByTypeCompte(type);
+    }
+
     public ResponseEntity<Client> Insert(Client clientInsert) {
         client2Repository.save(clientInsert);
 
@@ -62,8 +66,8 @@ public class ClientService2 {
         }
     }
 
-    public Long countAll() {
-        return client2Repository.count();
+    public Long countAllByType(Client.TypeCompte typeCompte) {
+        return client2Repository.countByTypeCompte(typeCompte);
     }
 
     public HashMap<String, Long> getDashboard() {
@@ -77,4 +81,5 @@ public class ClientService2 {
         return dashboard;
 
     }
+
 }

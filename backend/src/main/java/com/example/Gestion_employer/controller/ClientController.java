@@ -69,8 +69,11 @@ public class ClientController {
     }
 
     @GetMapping("/countAllClient")
-    public Long countClient() {
-        return clientService2.countAll();
+    public Long countClient(@RequestParam String type) {
+        Client.TypeCompte typeCount = Client.TypeCompte
+                .valueOf(type.toUpperCase());
+
+        return clientService2.countAllByType(typeCount);
     }
 
     @GetMapping("/getDashboard")
@@ -86,5 +89,14 @@ public class ClientController {
             // Affichera : JSESSIONID = 631B93C9032A1DE6F86D98C4A3634486
         }
         return "test";
+    }
+
+    @GetMapping("/getAllParType/{typeCompte}")
+    List<Client> getAllParType(@PathVariable String typeCompte) {
+
+        Client.TypeCompte typeCount = Client.TypeCompte.valueOf(typeCompte.toUpperCase());
+
+        return clientService2.getAllClientByTypeCount(typeCount);
+
     }
 }

@@ -9,26 +9,30 @@ import com.example.Gestion_employer.Entity.Client;
 
 public interface Client2Repository extends JpaRepository<Client, Integer> {
 
-    List<Client> findByNomContainingOrNumCompte(String nom, Long numCompte);
+        List<Client> findByNomContainingOrNumCompte(String nom, Long numCompte);
 
-    List<Client> findByNomContaining(String nom);
+        List<Client> findByNomContaining(String nom);
 
-    @Query("""
-            SELECT MIN(c.solde)
-            FROM Client c
-            """)
-    Long minSolde();
+        List<Client> findByTypeCompte(Client.TypeCompte typeCompte);
 
-    @Query("""
-            SELECT MAX(c.solde)
-            FROM Client c
-            """)
-    Long maxSolde();
+        Long countByTypeCompte(Client.TypeCompte typeCompte);
 
-    @Query("""
-            SELECT SUM(c.solde)
-            FROM Client c
-            """)
-    Long totalSolde();
+        @Query("""
+                        SELECT MIN(c.solde)
+                        FROM Client c
+                        """)
+        Long minSolde();
+
+        @Query("""
+                        SELECT MAX(c.solde)
+                        FROM Client c
+                        """)
+        Long maxSolde();
+
+        @Query("""
+                        SELECT SUM(c.solde)
+                        FROM Client c
+                        """)
+        Long totalSolde();
 
 }

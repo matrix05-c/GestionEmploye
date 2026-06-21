@@ -1,6 +1,8 @@
 package com.example.Gestion_employer.Entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 @Entity
@@ -11,6 +13,14 @@ public class Client {
     private String nom;
 
     private long solde;
+
+    public enum TypeCompte {
+        COURANT,
+        EPARGNE
+    }
+
+    @Enumerated(EnumType.STRING)
+    private TypeCompte typeCompte;
 
     public void setNumCompte(Integer numCompte) {
 
@@ -35,5 +45,13 @@ public class Client {
 
     public long getSolde() {
         return this.solde;
+    }
+
+    public void setTypeCompte(TypeCompte typeCompte) {
+        this.typeCompte = typeCompte;
+    }
+
+    public TypeCompte getTypeCompte() {
+        return this.typeCompte;
     }
 }
