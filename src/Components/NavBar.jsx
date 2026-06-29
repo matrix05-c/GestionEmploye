@@ -15,7 +15,7 @@ function NavBar() {
     }
     return (
         <>
-            <nav className="navbar navbar-expand-lg " style={{ borderBottom: "grey solid 1px", backgroundColor: "#212529", boxShadow: "-4px 14px 19px -5px #212529" }}>
+            <nav className="navbar navbar-expand-lg mb-3" style={{ borderBottom: "grey solid 1px", backgroundColor: "#212529", boxShadow: "-4px 14px 19px -5px #212529" }}>
                 <div className="container-fluid">
                     <button
                         className="navbar-toggler"
@@ -35,6 +35,10 @@ function NavBar() {
                                 <NavLink className={({ isActive }) =>
                                     isActive ? "nav-link fw-bold text-success active-link"
                                         : "nav-link fw-bold text-white"} to="/liste">Liste</NavLink>
+                            </li>
+
+                            <li className="nav-item">
+                                <NavLink className="nav-link fw-bold text-white" to="/EspaceClient">Historique</NavLink>
                             </li>
 
                             <li className="nav-item">

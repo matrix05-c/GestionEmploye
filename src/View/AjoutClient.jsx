@@ -105,7 +105,7 @@ function AjoutClient() {
                         className="me-md-3 mb-2 mb-md-0 flex-shrink-0"
                         style={{ minWidth: "160px" }}
                     >
-                        Solde :
+                        Solde initial :
                     </label>
 
                     <input

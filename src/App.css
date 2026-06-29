@@ -83,3 +83,25 @@ body,
     background-color: #198754;
     border-radius: 2px;
 }
+
+.same-btn {
+    width: 120px;
+    height: 45px;
+    border-radius: 0;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.same-btnPolice {
+    font-size: clamp(0.8rem, 2vw, 1rem);
+
+}
+
+.same-btnTransaction {
+    font-size: clamp(0.7rem, 2vw, 1rem);
+}
+
+.comptePolice {
+    font-size: clamp(1rem, 2vw, 1.5rem);
+
+}

@@ -1,8 +1,10 @@
 import Table from "../Components/Table";
+import NavBar from "../Components/NavBar";
 function Liste() {
     return (
         <>
-            <h1 className="text-center text-white">Liste des Clients</h1>
+        <NavBar></NavBar>
+            <h1 className="text-center mt-3 text-white">Liste des Clients</h1>
             
             <div>
                 <Table></Table>
