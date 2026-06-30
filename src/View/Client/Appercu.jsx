@@ -1,4 +1,5 @@
 import NavBarClient from "../../Components/NavBarClient"
+import EvolutionSolde from "./EvolutionSolde";
 function Appercue() {
     return (
         <>
@@ -39,7 +40,10 @@ function Appercue() {
                 </button>
             </div>
 
-            <h2 className="text-secondary mt-4 mx-2 mx-lg-4" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>Evolution du solde</h2>
+            <h2 className="text-white mt-4 mx-2 mx-lg-4" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>Evolution du solde</h2>
+            <div>
+                <EvolutionSolde />
+            </div>
         </>
     )
 }
