@@ -105,3 +105,15 @@ body,
     font-size: clamp(1rem, 2vw, 1.5rem);
 
 }
+
+.pdpImage{
+    width: 200px;
+    height: 200px;
+}
+
+@media (max-width: 768px) {
+  .pdpImage{
+    width: 100px;
+    height: 100px;
+  }
+}
