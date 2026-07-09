@@ -1,6 +1,11 @@
 import NavBarClient from "../../Components/NavBarClient"
 import EvolutionSolde from "./EvolutionSolde";
+import { useState } from "react";
+import TransactionMenu from "./TransactionMenu";
+
 function Appercue() {
+
+
     return (
         <>
             <div className="card mt-4 py-1 pb-4 py-lg-3 rounded-0 mx-2 px-2 mx-lg-4 bg-dark" style={{ border: "2px solid red" }}>
@@ -26,19 +31,7 @@ function Appercue() {
                 </div>
             </div>
 
-            <div className="d-flex mt-3 mx-2 mx-lg-4 gap-lg-3 gap-1">
-                <button className="btn px-1 px-md-3 same-btn btn-dark same-btnTransaction rounded-0" style={{ border: "red solid 2px" }}>
-                    + Deposer
-                </button>
-
-                <button className="btn px-1 px-md-3  same-btn btn-dark same-btnTransaction rounded-0" style={{ border: "red solid 2px" }}>
-                    - Retirer
-                </button>
-
-                <button className="btn px-1 px-md-1 same-btn btn-dark same-btnTransaction rounded-0" style={{ border: "red solid 2px" }}>
-                    → Virement
-                </button>
-            </div>
+            <TransactionMenu></TransactionMenu>
 
             <h2 className="text-white mt-4 mx-2 mx-lg-4" style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}>
                 Evolution du solde
