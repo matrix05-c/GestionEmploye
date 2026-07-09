@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import photo from "../assets/LoginLogo.png"
 import { useState } from "react";
 import api from "../api/axios";
+import NavBarClient from "../Components/NavBarClient";
 
 function Accueil() {
     const navigate = useNavigate()
@@ -37,10 +38,10 @@ function Accueil() {
 
     return (
         <>
-            <h1 className="text-center mb-5 mt-5 text-white">Login</h1>
+            {/* <h1 className="text-center mb-5 mt-5 text-white">Login</h1> */}
+            <NavBarClient login={false}></NavBarClient>
 
-            <div className="card p-4 w-50 mx-auto d-flex flex-row flex-nowrap align-items-center">
-
+            <div className="card mt-5 p-4 w-50 mx-auto d-flex flex-row align-items-center justify-content-center">
                 <div className="w-50 pe-1 mt-5">
 
                     <div className="d-flex align-items-center mb-3">

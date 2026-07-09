@@ -32,7 +32,7 @@ function App() {
           <Route path='UpdateClient/:id' element={<UpdateClient />} />
           {/* </Route> */}
 
-          <Route path='EspaceClient' element={<NavBarClient></NavBarClient>}>
+          <Route path='EspaceClient' element={<NavBarClient login={true}></NavBarClient>}>
             <Route path='AppercuClient' element={<Appercue />}></Route>
             <Route path='Historique' element={<Historique />}></Route>
             <Route path='Profil' element={<Profil />}></Route>
