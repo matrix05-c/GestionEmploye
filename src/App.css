@@ -115,6 +115,11 @@ body,
   .pdpImage{
     width: 100px;
     height: 100px;
+
+    .labelForm{
+        display: none !important;
+        color: red;
+    }
   }
 
   /* #loginPhoto{

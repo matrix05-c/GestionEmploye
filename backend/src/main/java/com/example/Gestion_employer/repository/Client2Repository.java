@@ -1,6 +1,7 @@
 package com.example.Gestion_employer.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,8 @@ public interface Client2Repository extends JpaRepository<Client, Integer> {
         List<Client> findByNomContaining(String nom);
 
         List<Client> findByTypeCompte(Client.TypeCompte typeCompte);
+
+        Optional<Client> findByEmail(String email);
 
         Long countByTypeCompte(Client.TypeCompte typeCompte);
 

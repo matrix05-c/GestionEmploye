@@ -6,7 +6,13 @@ function NavBarClient({ login }) {
         <>
             <h6 className="text-white mt-3 mx-2 mx-lg-4">Espace</h6>
             <div className="d-flex mx-2 mx-lg-4 mt-1 pb-2 justify-content-between" style={{ borderBottom: "red solid 2px" }}>
-                <h2 className="text-white fw-bold">MON COMPTE</h2>
+               
+                {login
+                    ? <h2 className="text-white fw-bold">MON COMPTE</h2>
+                    : <h2 className="text-white fw-bold">LOGIN</h2>
+                }
+                {/* <h2 className="text-white fw-bold">MON COMPTE</h2> */}
+
                 <img src={Logo} alt="" />
             </div>
 

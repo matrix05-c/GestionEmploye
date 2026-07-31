@@ -5,7 +5,6 @@ import TransactionMenu from "./TransactionMenu";
 
 function Appercue() {
 
-
     return (
         <>
             <div className="card mt-4 py-1 pb-4 py-lg-3 rounded-0 mx-2 px-2 mx-lg-4 bg-dark" style={{ border: "2px solid red" }}>

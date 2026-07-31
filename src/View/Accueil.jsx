@@ -15,14 +15,18 @@ function Accueil() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    const authentification = {
+        email: email,
+        password: password
+    }
+
     const handleLogin = () => {
         api.post(
-            '/login',
-            new URLSearchParams({ email, password }), {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        })
+            'http://localhost:8080/auth/login', authentification)
+            // {
+            // // headers: {
+            // //     "Content-Type": "application/x-www-form-urlencoded"
+            // // }})
 
             .then(Response => {
 
@@ -43,32 +47,40 @@ function Accueil() {
                 {/* <h1 className="text-center mb-5 mt-5 text-white">Login</h1> */}
                 <NavBarClient login={false}></NavBarClient>
 
-                <div className="d-flex align-items-center justify-content-center" style={{ minHeight: "70vh" }}>
-                    <div className="card p-4 w-50 mx-auto d-flex flex-md-row flex-column flex-column-reverse">
-                        <div className="w-50 pe-1 mt-5">
+                <div className="d-flex align-items-center mt-2 mt-md-0 justify-content-center" style={{ minHeight: "70vh" }}>
 
-                            <div className="d-flex align-items-center mb-3">
-                                <label className="me-3" style={{ width: "100px" }}>Email: </label>
-                                <div className="form-outline" >
-                                    <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="Entrer votre email" className="form-control" />
+                    <div className="card p-1 px-md-4 mx-2 pt-4 pt-md-5" style={{ maxWidth: "700px", width: "100%", border: "blue solid 2px" }}>
+
+                        <div className="row flex-column-reverse  flex-md-row-reverse">
+                            <div className="col-12  col-md-8 mt-2 mt-md-4">
+
+                                <div className="d-flex row align-items-center mb-3">
+
+                                    <label className="col-3 col-form-label d-none d-md-block">Email: </label>
+                                    <div className="form-outline col" >
+                                        <input type="email" value={email} onChange={(e) => { setEmail(e.target.value) }} placeholder="Entrer votre email" className="form-control" />
+                                    </div>
+
+                                </div>
+
+                                <div className="d-flex row align-items-center mb-3">
+
+                                    <label className="col-3 col-form-label d-none d-md-block">Password: </label>
+                                    <div className="form-outline col" >
+                                        <input type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} placeholder="password" className="form-control" />
+                                    </div>
+
+                                </div>
+
+                                <div className="mt-4 mb-4 col">
+                                    <button onClick={handleLogin} className="btn btn-primary col-12">Login</button>
+                                    <p className="text-primary text-start mt-3" style={{ fontSize: "13px" }}>Don't have an account? Register here</p>
                                 </div>
                             </div>
-
-                            <div className="d-flex align-items-center mb-3">
-                                <label className="me-3" style={{ width: "100px" }}>Password: </label>
-                                <div className="form-outline" >
-                                    <input type="password" value={password} onChange={(e) => { setPassword(e.target.value) }} placeholder="password" className="form-control" />
-                                </div>
+                            <div className="col-6 mx-auto col-md-4 d-flex align-items-center rounded-circle">
+                                <img src={photo} id="loginPhoto" alt="loginPhoto" className="img-fluid"
+                                    style={{}} />
                             </div>
-
-                            <div className="mt-4 mb-5" style={{ marginLeft: "" }}>
-                                <button onClick={handleLogin} className="btn btn-primary w-100">Login</button>
-
-                            </div>
-                        </div>
-                        <div className="w-50 p-0 d-flex">
-                            <img src={photo} id="loginPhoto" alt="loginPhoto" className="w-100 h-100"
-                                style={{}} />
                         </div>
                     </div>
                 </div>

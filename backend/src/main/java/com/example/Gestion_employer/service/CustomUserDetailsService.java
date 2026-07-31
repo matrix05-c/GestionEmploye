@@ -7,16 +7,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.Gestion_employer.Entity.User;
-import com.example.Gestion_employer.repository.UserRepository;
-
+import com.example.Gestion_employer.Entity.Client;
+import com.example.Gestion_employer.repository.Client2Repository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserRepository repository;
+    private final Client2Repository repository;
 
-    public CustomUserDetailsService(UserRepository repository) {
+    public CustomUserDetailsService(Client2Repository repository) {
         this.repository = repository;
     }
 
@@ -24,12 +23,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
 
-        User user = repository.findByEmail(email)
+        Client client = repository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("utilisateur untrouvable"));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
+                .withUsername(client.getEmail())
+                .password(client.getPassword())
                 .authorities(List.of())
                 .build();
     }
