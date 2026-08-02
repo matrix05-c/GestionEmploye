@@ -50,7 +50,7 @@ function NavBar() {
 
                         {/* <span style={{ fontWeight: "bolder" }} className="text-white me-2 ms-auto">Gestion_Client</span> */}
 
-                        <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "25px", cursor: "pointer" }}></i>
+                        <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "22px", cursor: "pointer" }}></i>
 
                     </div>
                 </div>

@@ -1,19 +1,32 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Logo from "../assets/notifications.svg"
+import api from "../api/axios";
 
 function NavBarClient({ login }) {
+
+    const deconnexion = () => {
+        api.get("http://localhost:8080/logout")
+            .then(response => {
+                navigate('/')
+
+            }).catch(error => console.log("failed to logout"))
+    }
+
     return (
         <>
             <h6 className="text-white mt-3 mx-2 mx-lg-4">Espace</h6>
             <div className="d-flex mx-2 mx-lg-4 mt-1 pb-2 justify-content-between" style={{ borderBottom: "red solid 2px" }}>
-               
+
                 {login
                     ? <h2 className="text-white fw-bold">MON COMPTE</h2>
                     : <h2 className="text-white fw-bold">LOGIN</h2>
                 }
-                {/* <h2 className="text-white fw-bold">MON COMPTE</h2> */}
 
-                <img src={Logo} alt="" />
+                {login
+                    ? <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "22px", cursor: "pointer" }}></i>
+                    : <img src={Logo} alt="" />
+                }
+
             </div>
 
             {login &&

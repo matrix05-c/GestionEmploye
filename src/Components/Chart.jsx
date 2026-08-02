@@ -16,7 +16,7 @@ function Chart() {
     });
 
     const getData = () => {
-        api.get("http://localhost:8080/getDashboard")
+        api.get("admin/getDashboard")
             .then(response => {
 
                 setData({
@@ -30,7 +30,7 @@ function Chart() {
 
     useEffect(() => {
         getData()
-    }, [])
+    }, [data])
 
     const chartData = useMemo(() => [
         { name: "Total", valeur: data.total, couleur: "#0d6efd" },

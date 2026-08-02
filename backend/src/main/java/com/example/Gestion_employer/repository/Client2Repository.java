@@ -18,6 +18,8 @@ public interface Client2Repository extends JpaRepository<Client, Integer> {
 
         Optional<Client> findByEmail(String email);
 
+        Optional<Client> findByNumCompte(String numCompte);
+
         Long countByTypeCompte(Client.TypeCompte typeCompte);
 
         @Query("""

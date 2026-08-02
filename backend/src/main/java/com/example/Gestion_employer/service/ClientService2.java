@@ -40,12 +40,12 @@ public class ClientService2 {
 
     }
 
-    public Client getClientUpdate(int id) {
-        return client2Repository.findById(id).orElseThrow();
+    public Client getClientUpdate(String numCompte) {
+        return client2Repository.findByNumCompte(numCompte).orElseThrow();
     }
 
-    public Client updateClient(int id, Client clientUpdate) {
-        Client client = client2Repository.findById(id)
+    public Client updateClient(String id, Client clientUpdate) {
+        Client client = client2Repository.findByNumCompte(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         client.setNom(clientUpdate.getNom());
@@ -80,6 +80,22 @@ public class ClientService2 {
 
         return dashboard;
 
+    }
+
+    public Client findByEmail(String email) {
+        return client2Repository.findByEmail(email).orElseThrow();
+    }
+
+    public double calculerInteret(String numCompte) {
+        Client client = client2Repository.findByNumCompte(numCompte)
+                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+
+        double taux = switch (client.getTypeCompte()) {
+            case EPARGNE -> 0.03; 
+            case COURANT -> 0.005;
+        };
+
+        return client.getSolde() * taux;
     }
 
 }

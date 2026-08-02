@@ -21,7 +21,7 @@ function Table() {
     const [clients, setClients] = useState([]);
 
     const deleteClient = (id) => {
-        api.delete(`http://localhost:8080/deleteUser/${id}`)
+        api.delete(`http://localhost:8080/admin/deleteUser/${id}`)
             .then(response => {
                 console.log(response.data)
                 setClients(clients.filter(client1 => client1.numCompte != id))
@@ -30,6 +30,7 @@ function Table() {
             .catch(error => console.log(error))
     }
 
+
     const [rechercheValue, setRechercheValue] = useState('');
 
     const findclient = () => {
@@ -37,10 +38,10 @@ function Table() {
         let url = '';
 
         if (!rechercheValue) {
-            url = "http://localhost:8080/allClient";
+            url = "http://localhost:8080/admin/allClient";
 
         } else {
-            url = "http://localhost:8080/findClient?find=" + rechercheValue;
+            url = "http://localhost:8080/admin/findClient?find=" + rechercheValue;
         }
         api.get(url)
             .then(response => {
@@ -52,28 +53,18 @@ function Table() {
     const [typeCompte, setTypeCompte] = useState('COURANT')
 
     const getAllClient = () => {
-        api.get("http://localhost:8080/getAllParType/" + typeCompte)
+        api.get("http://localhost:8080/admin/getAllParType/" + typeCompte)
             .then(Response => {
                 setClients(Response.data)
             })
             .catch(error => console.log(error));
     }
 
-    useEffect(() => {
-
-        if (!rechercheValue) {
-            getAllClient()
-        }
-        else {
-            findclient()
-        }
-
-    }, [rechercheValue])
 
     const [nbclients, setNbClients] = useState(0);
 
     const countAllClient = () => {
-        api.get("http://localhost:8080/countAllClient?type=" + typeCompte)
+        api.get("http://localhost:8080/admin/countAllClient?type=" + typeCompte)
             .then(response => setNbClients(response.data))
             .catch(error => console.log(error))
     }
@@ -83,7 +74,14 @@ function Table() {
 
         countAllClient();
 
-    }, []);
+         if (!rechercheValue) {
+            getAllClient()
+        }
+        else {
+            findclient()
+        }
+
+    }, [typeCompte, rechercheValue]);
 
 
     const CalculObservation = (solde) => {

@@ -35,6 +35,26 @@ public class DatabaseSeeder implements CommandLineRunner {
         admin.setTypeCompte(Client.TypeCompte.COURANT);
         clientRepository.save(admin);
 
+        Client caddy1 = new Client();
+        caddy1.setNom("caddy1");
+        caddy1.setEmail("caddy1@gmail.com");
+        caddy1.setPassword(passwordEncoder.encode("caddy1"));
+        caddy1.setRole(Client.Role.USER);
+        caddy1.setNumCompte("CPT-00002");
+        caddy1.setSolde(700);
+        caddy1.setTypeCompte(Client.TypeCompte.COURANT);
+        clientRepository.save(caddy1);
+
+         Client caddy2 = new Client();
+        caddy2.setNom("caddy2");
+        caddy2.setEmail("caddy2@gmail.com");
+        caddy2.setPassword(passwordEncoder.encode("caddy2"));
+        caddy2.setRole(Client.Role.USER);
+        caddy2.setNumCompte("CPT-00003");
+        caddy2.setSolde(200);
+        caddy2.setTypeCompte(Client.TypeCompte.EPARGNE);
+        clientRepository.save(caddy2);
+
         System.out.println("admin cree !");
 
     }

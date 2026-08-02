@@ -28,10 +28,27 @@ function Accueil() {
             // //     "Content-Type": "application/x-www-form-urlencoded"
             // // }})
 
-            .then(Response => {
+            .then(response => {
+                console.log(response.data)
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("role", response.data.role);
+                localStorage.setItem("nom", response.data.nom);
+                localStorage.setItem("id", response.data.id);
+                localStorage.setItem("numCompte", response.data.numCompte)
 
+                if (response.data.role == "ADMIN") {
+
+                    navigate("/liste");
+
+                } else {
+
+                    navigate("/EspaceClient/AppercuClient");
+
+                }
+
+                console.log(response.data.role);
                 console.log("connecte!");
-                navigate('/liste')
+                // navigate('/liste')
             })
 
             .catch(error => {

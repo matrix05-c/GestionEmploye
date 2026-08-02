@@ -23,8 +23,8 @@ function UpdateClient() {
     })
 
     const clientUpdate = () => {
-        console.log("haha")
-        api.get(`http://localhost:8080/getUpdate/${id}`)
+        
+        api.get(`/admin/getUpdate/${id}`)
             .then(Response => {
 
                 setClientUpdateValue({
@@ -40,10 +40,10 @@ function UpdateClient() {
 
     useEffect(() => {
         clientUpdate()
-    }, [])
+    }, [id])
 
     const updateEnvoyer = () => {
-        api.put("http://localhost:8080/updateGo/" + id, clientUpdateValue)
+        api.put("/admin/updateGo/" + id, clientUpdateValue)
             .then(respose => {
                 goToListe()
             })

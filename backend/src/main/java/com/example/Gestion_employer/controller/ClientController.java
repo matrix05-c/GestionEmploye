@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/admin")
 public class ClientController {
 
     @Autowired
@@ -51,12 +53,12 @@ public class ClientController {
     }
 
     @GetMapping("/getUpdate/{id}")
-    public Client getUpdate(@PathVariable int id) {
+    public Client getUpdate(@PathVariable String id) {
         return clientService2.getClientUpdate(id);
     }
 
     @PutMapping("/updateGo/{id}")
-    public Client goUpdate(@PathVariable int id, @RequestBody Client clientUpdate) {
+    public Client goUpdate(@PathVariable String id, @RequestBody Client clientUpdate) {
 
         return clientService2.updateClient(id, clientUpdate);
 

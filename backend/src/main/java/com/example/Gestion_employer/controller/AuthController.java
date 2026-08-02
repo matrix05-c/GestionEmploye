@@ -52,6 +52,7 @@ public class AuthController {
                 "token", token,
                 "role", client.getRole().name(),
                 "nom", client.getNom(),
-                "id", client.getId()));
+                "id", client.getId(),
+                "numCompte", client.getNumCompte()));
     }
 }

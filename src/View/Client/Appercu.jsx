@@ -1,9 +1,39 @@
 import NavBarClient from "../../Components/NavBarClient"
 import EvolutionSolde from "./EvolutionSolde";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionMenu from "./TransactionMenu";
+import api from "../../api/axios";
 
 function Appercue() {
+
+    const numCompte = localStorage.getItem("numCompte");
+    const [soldeDispo, setSoldeDispo] = useState('');
+    const [interetMensuel, setInteretMensuel] = useState(0);
+
+    const response = () => {
+        api.get("/client/allInfoClient")
+            .then(response => {
+                console.log(response.data)
+                setSoldeDispo(response.data.solde)
+
+            })
+            .catch(error => console.log(error))
+    }
+
+    const getInteret = () => {
+        api.get("/client/calculInteret/" + numCompte)
+            .then(response => {
+                setInteretMensuel(response.data.interetMensuel)
+
+            })
+            .catch(error => console.log(error))
+    }
+
+
+    useEffect(() => {
+        response()
+        getInteret()
+    }, [numCompte])
 
     return (
         <>
@@ -14,17 +44,17 @@ function Appercue() {
 
                         <div className="d-block gap-5">
                             <h3 className="text-secondary" style={{ fontSize: "clamp(1rem, 2vw, 1.8rem)" }}> Solde disponible- </h3>
-                            <p className="text-danger fs-3 fw-bold font-monospace">820 000 Ar</p>
+                            <p className="text-danger fs-3 fw-bold font-monospace">{soldeDispo} Ar</p>
 
                         </div>
 
-                        <h5 className="text-secondary mt-1 comptePolice">Compte Épargne · N° 0021145</h5>
+                        <h5 className="text-secondary mt-1 comptePolice">Compte Épargne · N° {numCompte}</h5>
 
                     </div>
 
                     <div className="d-block mt-lg-5 ms-3">
                         <small className="text-secondary">Intérêt ce mois</small>
-                        <p className="text-danger m-0 font-monospace"> + 820 000 Ar</p>
+                        <p className="text-danger m-0 font-monospace"> + {interetMensuel} Ar</p>
 
                     </div>
                 </div>
