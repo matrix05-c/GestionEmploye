@@ -42,6 +42,10 @@ public class JwtService {
         return getClaims(token).get("role", String.class);
     }
 
+    public Long extractId(String token) {
+        return getClaims(token).get("id", Long.class);
+    }
+
     // Vérifier si le token est valide
     public boolean isTokenValid(String token) {
         try {
