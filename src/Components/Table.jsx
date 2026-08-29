@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import Swal from "sweetalert2";
 
 
 function Table() {
@@ -24,7 +25,13 @@ function Table() {
         api.delete(`http://localhost:8080/admin/deleteUser/${id}`)
             .then(response => {
                 console.log(response.data)
-                setClients(clients.filter(client1 => client1.numCompte != id))
+                setClients(clients.filter(client1 => client1.id != id))
+                Swal.fire({
+                    title: "reussi",
+                    text: "client effacé avec succés",
+                    icon: "success",
+                    theme: 'dark'
+                })
             })
 
             .catch(error => console.log(error))
@@ -74,7 +81,7 @@ function Table() {
 
         countAllClient();
 
-         if (!rechercheValue) {
+        if (!rechercheValue) {
             getAllClient()
         }
         else {
@@ -102,90 +109,105 @@ function Table() {
 
     return (
         <>
-            <div className="d-flex justify-content-between ps-5 pe-5">
 
-                <button onClick={goToAddClient} className="btn btn-success ms-5 mb-4 d-flex align-items-center gap-3">
-                    <i className="bi bi-person-plus"> </i>
-                    Nouveau Client
-                </button>
+            <div className="d-flex flex-column flex-md-row justify-content-between gap-3 px-2 px-md-5 mt-1 mt-md-5">
 
-                <div className="input-group w-25" style={{ height: "40px" }}>
+                <select
+                    className="form-select w-100 w-md-25"
+                    style={{ maxWidth: "300px" }}
+                    value={typeCompte}
+                    onChange={(e) => setTypeCompte(e.target.value)}
+                >
+                    <option value="COURANT">
+                        Liste des comptes Courant
+                    </option>
 
-                    <input type="search" value={rechercheValue} onChange={(e) => setRechercheValue(e.target.value)}
-                        className="form-control rounded" placeholder="Search" />
+                    <option value="EPARGNE">
+                        Liste des comptes Épargne
+                    </option>
+                </select>
 
-                    <button type="button" onClick={() => {
-                        findclient()
-                    }} className="btn btn-outline-primary">search</button>
 
+                <div
+                    className="input-group w-100 w-md-25"
+                    style={{ maxWidth: "350px" }}
+                >
+                    <input
+                        type="search"
+                        value={rechercheValue}
+                        onChange={(e) => setRechercheValue(e.target.value)}
+                        className="form-control"
+                        placeholder="Rechercher..."
+                    />
+
+                    <button
+                        type="button"
+                        onClick={findclient}
+                        className="btn btn-outline-primary"
+                    >
+                        <i className="bi bi-search"></i>
+                    </button>
                 </div>
 
             </div>
 
-            <select className="form-select w-25 mx-3 mb-3" style={{ minWidth: '240px' }} value={typeCompte}
-                onChange={(e) => { setTypeCompte(e.target.value) }}>
-                <option value="COURANT" defaultValue>
-                    Liste des compte Courant
-                </option>
-
-                <option value="EPARGNE">
-                    List des compte EPARGNE
-                </option>
-            </select>
-
-            <p className="text-white ps-5 small fw-bold ms-2">nombre des clients : {nbclients}</p>
-
-            <table className="table table-hovered align-middle text-center table-bordered custom-table">
-                <thead>
-                    <tr>
-                        <th scope="col" className="text-white">num Compte</th>
-                        <th scope="col" className="text-white">Nom</th>
-                        <th scope="col" className="text-white">Solde</th>
-                        <th scope="col" className="text-white">Observation</th>
-                        <th scope="col" className="text-white">Action</th>
-                    </tr>
-                </thead>
 
 
-                <tbody>
-                    {
-                        clients.length > 0
-                            ? clients.map((client) => {
-                                const obs = CalculObservation(client.solde)
+            <p className="text-white ps-5 small mt-3 fw-bold ms-2">nombre des clients : {nbclients}</p>
 
-                                return (
-                                    <tr key={client.numCompte}>
-                                        <th scope="row" className="text-white">{client.numCompte}</th>
-                                        <td className="text-white">{client.nom}</td>
-                                        <td className="text-white">{client.solde}</td>
+            <div className="table-responsive">
+                <table className="table table-hovered align-middle text-center table-bordered custom-table">
+                    <thead>
+                        <tr>
+                            <th scope="col" className="text-white">num Compte</th>
+                            <th scope="col" className="text-white">Nom</th>
+                            <th scope="col" className="text-white">Solde</th>
+                            <th scope="col" className="text-white">Observation</th>
+                            <th scope="col" className="text-white">Action</th>
+                        </tr>
+                    </thead>
 
-                                        <td style={{ color: obs.couleur }}>
-                                            {obs.texte}
-                                        </td>
 
-                                        <td>
+                    <tbody>
+                        {
+                            clients.length > 0
+                                ? clients.map((client) => {
+                                    const obs = CalculObservation(client.solde)
 
-                                            <div className="d-flex justify-content-center gap-3 ">
-                                                <button onClick={() => { goToUpdate(client.numCompte) }} className="btn btn-outline-primary btn-sm px-3">
-                                                    <i className="bi bi-pencil"></i>
-                                                </button>
-                                                <button onClick={() => { deleteClient(client.numCompte) }} className="btn btn-outline-danger btn-sm px-3">
-                                                    <i className="bi bi-trash3"></i>
-                                                </button>
-                                            </div>
+                                    return (
+                                        <tr key={client.numCompte}>
+                                            <th scope="row" className="text-white">{client.numCompte}</th>
+                                            <td className="text-white">{client.nom}</td>
+                                            <td className="text-white">{client.solde}</td>
 
-                                        </td>
-                                    </tr>
-                                )
-                            }
-                            ) : <tr>
-                                <td colSpan={5} className="fw-bold">
-                                    Aucun client trouvve
-                                </td>
-                            </tr>
-                    }
-                </tbody>
-            </table>
+                                            <td style={{ color: obs.couleur }}>
+                                                {obs.texte}
+                                            </td>
+
+                                            <td>
+
+                                                <div className="d-flex justify-content-center gap-3 ">
+                                                    <button onClick={() => { goToUpdate(client.numCompte) }} className="btn btn-outline-primary btn-sm px-3">
+                                                        <i className="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button onClick={() => { deleteClient(client.id) }} className="btn btn-outline-danger btn-sm px-3">
+                                                        <i className="bi bi-trash3"></i>
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+                                ) : <tr>
+                                    <td colSpan={5} className="fw-bold">
+                                        Aucun client trouvve
+                                    </td>
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 }

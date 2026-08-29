@@ -31,7 +31,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         admin.setPassword(passwordEncoder.encode("1234"));
         admin.setRole(Client.Role.ADMIN);
         admin.setNumCompte("CPT-00001");
-        admin.setSolde(0);
+        admin.setSolde(0L);
         admin.setTypeCompte(Client.TypeCompte.COURANT);
         clientRepository.save(admin);
 
@@ -41,7 +41,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         caddy1.setPassword(passwordEncoder.encode("caddy1"));
         caddy1.setRole(Client.Role.USER);
         caddy1.setNumCompte("CPT-00002");
-        caddy1.setSolde(700);
+        caddy1.setSolde(700L);
         caddy1.setTypeCompte(Client.TypeCompte.COURANT);
         clientRepository.save(caddy1);
 
@@ -51,7 +51,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         caddy2.setPassword(passwordEncoder.encode("caddy2"));
         caddy2.setRole(Client.Role.USER);
         caddy2.setNumCompte("CPT-00003");
-        caddy2.setSolde(200);
+        caddy2.setSolde(200L);
         caddy2.setTypeCompte(Client.TypeCompte.EPARGNE);
         clientRepository.save(caddy2);
 

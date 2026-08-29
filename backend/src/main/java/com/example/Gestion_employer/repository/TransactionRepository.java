@@ -11,5 +11,9 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     // List<Transaction> findByClientId(Long clientId);
 
-     List<Transaction> findByClient_Email(String email);
+    List<Transaction> findByClient_Email(String email);
+
+    List<Transaction> findTop5ByClient_EmailOrderByDateTransactionDesc(String email);
+
+    List<Transaction> findByClient_EmailOrderByDateTransactionAsc(String email);
 }

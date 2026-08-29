@@ -6,13 +6,19 @@ function NavBar() {
     const [openNav, setOpenNav] = useState(false);
 
     const navigate = useNavigate()
-    const deconnexion = () => {
-        api.get("http://localhost:8080/logout")
-            .then(response => {
-                navigate('/')
+    // const deconnexion = () => {
+    //     api.post("http://localhost:8080/logout")
+    //         .then(response => {
+    //             navigate('/')
 
-            }).catch(error => console.log("failed to logout"))
-    }
+    //         }).catch(error => console.log("failed to logout"))
+    // }
+
+    const deconnexion = () => {
+        localStorage.removeItem("token"); // ou sessionStorage, selon où tu le stockes
+        navigate('/');
+    };
+    
     return (
         <>
             <nav className="navbar navbar-expand-lg mb-3" style={{ borderBottom: "grey solid 1px", backgroundColor: "#212529", boxShadow: "-4px 14px 19px -5px #212529" }}>
@@ -21,6 +27,7 @@ function NavBar() {
                         className="navbar-toggler"
                         type="button"
                         onClick={() => setOpenNav(!openNav)}
+                        style={{ filter: "invert(1)" }}
                     >
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -37,9 +44,6 @@ function NavBar() {
                                         : "nav-link fw-bold text-white"} to="/liste">Liste</NavLink>
                             </li>
 
-                            <li className="nav-item">
-                                <NavLink className="nav-link fw-bold text-white" to="/EspaceClient">Historique</NavLink>
-                            </li>
 
                             <li className="nav-item">
                                 <NavLink className={({ isActive }) =>
@@ -50,7 +54,22 @@ function NavBar() {
 
                         {/* <span style={{ fontWeight: "bolder" }} className="text-white me-2 ms-auto">Gestion_Client</span> */}
 
-                        <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "22px", cursor: "pointer" }}></i>
+                        {/* <i onClick={deconnexion} className="bi bi-box-arrow-right me-2 text-white" style={{ fontSize: "22px", cursor: "pointer" }}></i> */}
+                        <div className="d-flex align-items-center mt-2 mt-lg-0 mb-2 mb-lg-0 ms-3 ms-lg-0">
+                            <i
+                                onClick={deconnexion}
+                                className="bi bi-box-arrow-right text-white"
+                                style={{ fontSize: "22px", cursor: "pointer" }}
+                                title="Déconnexion"
+                            ></i>
+                            <span
+                                onClick={deconnexion}
+                                className="text-white ms-2 fw-bold"
+                                style={{ cursor: "pointer", fontSize: "14px" }}
+                            >
+                                Déconnexion
+                            </span>
+                        </div>
 
                     </div>
                 </div>

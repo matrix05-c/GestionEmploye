@@ -1,16 +1,22 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import Logo from "../assets/notifications.svg"
 import api from "../api/axios";
 
-function NavBarClient({ login }) {
+function NavBarClient({ login, typeLogin }) {
+    const navigate = useNavigate()
+
+    // const deconnexion = () => {
+    //     api.get("http://localhost:8080/logout")
+    //         .then(response => {
+    //             navigate('/')
+
+    //         }).catch(error => console.log("failed to logout"))
+    // }
 
     const deconnexion = () => {
-        api.get("http://localhost:8080/logout")
-            .then(response => {
-                navigate('/')
-
-            }).catch(error => console.log("failed to logout"))
-    }
+        localStorage.removeItem("token"); // ou sessionStorage, selon où tu le stockes
+        navigate('/');
+    };
 
     return (
         <>
@@ -19,7 +25,7 @@ function NavBarClient({ login }) {
 
                 {login
                     ? <h2 className="text-white fw-bold">MON COMPTE</h2>
-                    : <h2 className="text-white fw-bold">LOGIN</h2>
+                    : <h2 className="text-white fw-bold">{typeLogin == "creation" ? "CREATE ACCOUNT" : "LOGIN"}</h2>
                 }
 
                 {login

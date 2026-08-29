@@ -26,7 +26,7 @@ public class Client {
     private String password;
 
     private String numCompte;
-    private Long solde;
+    private Long solde = 0L;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -88,11 +88,11 @@ public class Client {
         this.numCompte = numCompte;
     }
 
-    public long getSolde() {
+    public Long getSolde() {
         return solde;
     }
 
-    public void setSolde(long solde) {
+    public void setSolde(Long solde) {
         this.solde = solde;
     }
 

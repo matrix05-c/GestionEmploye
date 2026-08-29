@@ -52,6 +52,7 @@ public class TransactionController {
         try {
             // String numCompte = (String) body.get("numCompte");
             long montant = Long.parseLong(body.get("montant").toString());
+            System.out.println(montant);
             String password = (String) body.get("password");
             String email = authentication.getName();
 
@@ -71,14 +72,17 @@ public class TransactionController {
     }
 
     @PostMapping("/retrait")
-    public ResponseEntity<?> retrait(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> retrait(@RequestBody Map<String, Object> body, Authentication authentication) {
 
         try {
-            String numCompte = (String) body.get("numCompte");
+            // String numCompte = (String) body.get("numCompte");
+            String email = authentication.getName();
 
+            String password = (String) body.get("password");
             long montant = Long.parseLong(body.get("montant").toString());
 
-            Transaction t = transactionService.retrait(numCompte, montant);
+            Transaction t = transactionService.retrait(email, montant, password);
+
             return ResponseEntity.ok(Map.of(
                     "message", "Retrait effectué avec succès",
                     "montant", t.getMontant(),
@@ -90,28 +94,51 @@ public class TransactionController {
     }
 
     @PostMapping("/virement")
-    public ResponseEntity<?> virement(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> virement(@RequestBody Map<String, Object> body, Authentication authentication) {
         try {
-            String source = (String) body.get("numCompteSource");
+
+            String emailSource = authentication.getName();
             String dest = (String) body.get("numCompteDestinataire");
             long montant = Long.parseLong(body.get("montant").toString());
 
-            Transaction t = transactionService.virement(source, dest, montant);
+            Transaction t = transactionService.virement(emailSource, dest, montant);
 
             return ResponseEntity.ok(Map.of(
                     "message", "Virement effectué avec succès",
                     "montant", t.getMontant(),
                     "soldeApres", t.getSoldeApres()));
+
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
-    @GetMapping("/transactions")
+    @GetMapping("/transactionsHistorique")
     public List<Transaction> getHistorique(Authentication authentication) {
         String email = authentication.getName();
 
         return transactionService.getHistorique(email);
     }
 
+    @GetMapping("/getTop5Transaction")
+    public List<Transaction> getRecentHistorique(Authentication authentication) {
+        String email = authentication.getName();
+
+        return transactionService.get5RecentsHistoriques(email);
+    }
+
+    @GetMapping("/getEvolutionSolde")
+    public List<Transaction> getEvolutionSolde(Authentication authentication) {
+
+        String email = authentication.getName();
+
+        return transactionService.getEvolutionSolde(email);
+    }
+
+    @GetMapping("/getInfo")
+    public Client getInfo(Authentication authentication) {
+        String email = authentication.getName();
+
+        return clientService.findByEmail(email);
+    }
 }

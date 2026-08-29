@@ -12,6 +12,7 @@ import NavBarClient from './Components/NavBarClient'
 import Appercue from './View/Client/Appercu'
 import Historique from './View/Client/Historique'
 import Profil from './View/Client/Profil'
+import Accueil_createAccount from './View/Accueil_createAccount'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <div className="app-content">
         <Routes>
           <Route path='/' element={<Accueil />} />
+          <Route path='AccueilCreateAccount' element={<Accueil_createAccount />} />
 
 
           {/* <Route element={<MainLayout />} > */}

@@ -1,45 +1,27 @@
 package com.example.Gestion_employer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Gestion_employer.service.ClientService;
+import com.example.Gestion_employer.service.ClientService2;
 
-import java.util.List;
-
-import com.example.Gestion_employer.Entity.ClientEntity;;
+import com.example.Gestion_employer.Entity.Client;
 
 @RestController
 public class HomeController {
 
     @Autowired
-    private ClientService clientService;
+    private ClientService2 clientService2;
 
-    @GetMapping("/home")
-    public List<ClientEntity> home() {
+    @PostMapping("/createClient")
+    public ResponseEntity<?> createClient(@RequestBody Client client) {
 
-        return clientService.getAllClients();
+        clientService2.Insert(client);
 
+        return ResponseEntity.ok("Client créé avec succès");
     }
 
-    @GetMapping("/insert")
-    public List<ClientEntity> insert() {
-        ClientEntity s = new ClientEntity();
-
-        s.setNom("caddy");
-        s.setSolde(1500L);
-
-        clientService.insertClient(s);
-
-        return clientService.getAllClients();
-
-    }
-
-    @GetMapping("/delete/{id}")
-    public void delete(@PathVariable Integer id){
-    
-        clientService.deleteClient(id);
-    }
 }

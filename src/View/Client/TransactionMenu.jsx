@@ -5,8 +5,9 @@ import Form from 'react-bootstrap/Form';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import api from "../../api/axios";
+import Swal from "sweetalert2";
 
-function TransactionMenu() {
+function TransactionMenu({ onTransactionSuccess }) {
 
     const [showModalDepot, setShowModalDepot] = useState(false);
     const [showModalRetrait, setShowModalRetrait] = useState(false);
@@ -31,7 +32,10 @@ function TransactionMenu() {
         password: ''
     })
 
-    const deposer = () => {
+    const deposer = (e) => {
+
+        e.preventDefault();
+
         api.post('client/depot', depotValue)
             .then(response => {
                 setDepotValue({
@@ -39,13 +43,111 @@ function TransactionMenu() {
                     password: ''
                 })
                 console.log("depot reussi")
-            }).catch(error => console.log(error))
+                onTransactionSuccess();
+                handleCloseDepot()
+                Swal.fire({
+                    title: "Succès",
+                    text: "Depot réussie",
+                    icon: "success",
+                    theme: 'dark'
+                })
+            }).catch(error => {
+                console.log(error.response.data.error)
+                Swal.fire({
+                    title: "Erreur",
+                    text: error.response.data.error,
+                    icon: "error",
+                    theme: "dark"
+                });
+            })
+    }
+
+
+    const [retraitValue, setRetraitValue] = useState({
+        montant: 0,
+        password: ''
+    })
+
+    const retrait = (e) => {
+
+        e.preventDefault();
+
+        api.post('client/retrait', retraitValue)
+            .then(response => {
+
+                setRetraitValue({
+                    montant: 0,
+                    password: ''
+                })
+                console.log("retrait reussi");
+                onTransactionSuccess();
+
+                handleCloseRetrait()
+
+                Swal.fire({
+                    title: "Succès",
+                    text: "Retrait réussie",
+                    icon: "success",
+                    theme: 'dark'
+                })
+            }
+            ).catch(error => {
+                console.log(error.response.data.error)
+                Swal.fire({
+                    title: "Erreur",
+                    text: error.response.data.error,
+                    icon: "error",
+                    theme: "dark"
+                });
+            })
+    }
+
+    const [virementValue, setVirementValue] = useState({
+        montant: 0,
+        numCompteDestinataire: '',
+        password: ''
+    })
+
+    const virement = (e) => {
+
+        e.preventDefault();
+
+        api.post('client/virement', virementValue)
+            .then(response => {
+                setVirementValue({
+                    montant: 0,
+                    numCompteDestinataire: '',
+                    password: ''
+                })
+                onTransactionSuccess();
+                handleCloseVirement();
+
+                Swal.fire({
+                    title: "Succès",
+                    text: "Virement réussi",
+                    icon: "success",
+                    theme: 'dark'
+                })
+            }
+            ).catch(error => {
+                console.log(error.response.data.error)
+                Swal.fire({
+                    title: "Erreur",
+                    text: error.response.data.error,
+                    icon: "error",
+                    theme: "dark"
+                });
+            })
     }
 
     useEffect(() => {
         console.log(depotValue.montant)
         console.log(depotValue.password)
     }, [depotValue.montant])
+
+    useEffect(() => {
+        console.log("destinataire: ", virementValue.numCompteDestinataire);
+    }, [virementValue.numCompteDestinataire])
 
     return (
         <>
@@ -79,51 +181,60 @@ function TransactionMenu() {
                     <Modal.Title>Faire un depot</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
-                        <Form.Label>Entrer le montant</Form.Label>
-                        <Form.Control
-                            onChange={(e) => {
-                                setDepotValue({
-                                    ...depotValue,
-                                    montant: Number(e.target.value)
-                                })
-                            }}
-                            type="number"
-                            placeholder="0000 Ar"
-                            value={setDepotValue.montant}
-                            step={500}
-                            min={500}
-                            autoFocus
+                    <Form onSubmit={deposer}>
 
-                        />
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Entrer votre mot de pass</Form.Label>
-                        <Form.Control
+                            <Form.Label>Entrer le montant</Form.Label>
+                            <Form.Control
 
-                            onChange={(e) => {
-                                setDepotValue({
-                                    ...depotValue,
-                                    password: e.target.value
-                                })
-                            }}
-                            value={setDepotValue.password}
-                            type="password"
-                            placeholder="****"
-                        />
-                    </Form.Group>
+                                onChange={(e) => {
+                                    setDepotValue({
+                                        ...depotValue,
+                                        montant: Number(e.target.value)
+                                    })
+                                }}
+                                type="number"
+                                placeholder="0000 Ar"
+                                // value={depotValue.montant}
+                                min={500}
+                                autoFocus
+                                required
 
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Entrer votre mot de pass</Form.Label>
+                            <Form.Control
+
+                                onChange={(e) => {
+                                    setDepotValue({
+                                        ...depotValue,
+                                        password: e.target.value
+                                    })
+                                }}
+                                value={depotValue.password}
+                                type="password"
+                                placeholder="****"
+                                required
+                            />
+                        </Form.Group>
+
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseDepot}>
+                                Annuler
+                            </Button>
+                            <Button type="submit" variant="primary">
+                                Deposer
+                            </Button>
+                        </Modal.Footer>
+
+                    </Form>
 
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseDepot}>
-                        Annuler
-                    </Button>
-                    <Button variant="primary" onClick={deposer()}>Deposer</Button>
-                </Modal.Footer>
-            </Modal>
+            </Modal >
 
             <Modal
                 show={showModalRetrait}
@@ -137,34 +248,60 @@ function TransactionMenu() {
                     <Modal.Title>Faire un retrait -</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
-                        <Form.Label>Entrer le montant</Form.Label>
-                        <Form.Control
-                            type="number"
-                            placeholder="0000 Ar"
-                            step={500}
-                            min={500}
-                            autoFocus
-                        />
-                    </Form.Group>
+                    <Form onSubmit={retrait}>
 
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Entrer votre mot de pass</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="****"
-                        />
-                    </Form.Group>
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
 
+                            <Form.Label>Entrer le montant</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="0000 Ar"
+                                // value={retraitValue.montant}
+                                step={500}
+                                min={500}
+                                autoFocus
+                                required
+
+                                onChange={(e) => {
+                                    setRetraitValue({
+                                        ...retraitValue,
+                                        montant: Number(e.target.value)
+                                    })
+                                }}
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Entrer votre mot de pass</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="****"
+                                value={retraitValue.password}
+                                required
+
+                                onChange={(e) => {
+                                    setRetraitValue({
+                                        ...retraitValue,
+                                        password: e.target.value
+                                    })
+                                }}
+                                onFocus={(e) => e.target.placeholder = ""}
+                            // onBlur={(e) => e.target.placeholder = "****"}
+                            />
+                        </Form.Group>
+
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseRetrait}>
+                                Annuler
+                            </Button>
+                            <Button variant="primary" type="submit">Retirer</Button>
+                        </Modal.Footer>
+
+                    </Form>
 
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseRetrait}>
-                        Annuler
-                    </Button>
-                    <Button variant="primary">Retrait</Button>
-                </Modal.Footer>
+
             </Modal>
 
 
@@ -181,44 +318,86 @@ function TransactionMenu() {
                 </Modal.Header>
                 <Modal.Body>
 
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-
-                        <Form.Label>numero de compte</Form.Label>
-                        <Form.Control
-                            type="number"
-                            placeholder="numero de compte"
-                            autoFocus
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-
-                        <Form.Label>Entrer le montant</Form.Label>
-                        <Form.Control
-                            type="number"
-                            placeholder="0000 Ar"
-                            step={500}
-                            min={500}
-
-                        />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                        <Form.Label>Entrer votre mot de pass</Form.Label>
-                        <Form.Control
-                            type="password"
-                            placeholder="****"
-                        />
-                    </Form.Group>
+                    <Form onSubmit={virement}>
 
 
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+
+                            <Form.Label>numero de compte</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="numero de compte"
+                                // autoFocus
+                                value={virementValue.numCompteDestinataire}
+                                required
+
+                                onChange={(e) => {
+                                    console.log("hahaha")
+                                    setVirementValue({
+                                        ...virementValue,
+                                        numCompteDestinataire: e.target.value
+                                    })
+                                }}
+                                onFocus={(e) => { e.target.placeholder = '' }}
+                                onBlur={(e) => { e.target.placeholder = 'numero de compte' }}
+
+
+                            />
+
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+
+                            <Form.Label>Entrer le montant</Form.Label>
+                            <Form.Control
+                                type="number"
+                                placeholder="0000 Ar"
+                                step={500}
+                                min={500}
+                                value={virementValue.montant}
+                                required
+
+                                onChange={(e) => {
+                                    setVirementValue({
+                                        ...virementValue,
+                                        montant: Number(e.target.value)
+                                    })
+                                }}
+                                onFocus={(e) => { e.target.placeholder = '' }}
+                                onBlur={(e) => { e.target.placeholder = '0000 Ar' }}
+
+
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Entrer votre mot de pass</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="****"
+                                required
+
+                                onChange={(e) => {
+                                    setVirementValue({
+                                        ...virementValue,
+                                        password: e.target.value
+                                    })
+                                }}
+                                onFocus={(e) => { e.target.placeholder = '' }}
+                                onBlur={(e) => { e.target.placeholder = '****' }}
+
+                            />
+                        </Form.Group>
+
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleCloseVirement}>
+                                Annuler
+                            </Button>
+                            <Button variant="primary" type="submit">Confirmer</Button>
+                        </Modal.Footer>
+
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseVirement}>
-                        Annuler
-                    </Button>
-                    <Button variant="primary">Confirmer</Button>
-                </Modal.Footer>
             </Modal>
 
 

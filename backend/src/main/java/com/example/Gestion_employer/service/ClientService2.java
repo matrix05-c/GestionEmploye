@@ -5,15 +5,22 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.Gestion_employer.Entity.Client;
 import com.example.Gestion_employer.repository.Client2Repository;
 
+
+
+
 @Service
 public class ClientService2 {
     @Autowired
-    Client2Repository client2Repository;
+    private Client2Repository client2Repository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Client> getAllClients() {
 
@@ -26,7 +33,18 @@ public class ClientService2 {
     }
 
     public ResponseEntity<Client> Insert(Client clientInsert) {
-        client2Repository.save(clientInsert);
+
+        Client nouveauClient = client2Repository.save(clientInsert);
+
+        String numCompte = String.format("CPT-%05d", nouveauClient.getId());
+        nouveauClient.setNumCompte(numCompte);
+
+        String passwordHasse = passwordEncoder.encode(nouveauClient.getPassword());
+        nouveauClient.setPassword(passwordHasse);
+
+        nouveauClient.setRole(Client.Role.USER);
+
+        client2Repository.save(nouveauClient);
 
         return ResponseEntity.status(201).body(clientInsert);
     }
@@ -91,7 +109,7 @@ public class ClientService2 {
                 .orElseThrow(() -> new RuntimeException("Client non trouvé"));
 
         double taux = switch (client.getTypeCompte()) {
-            case EPARGNE -> 0.03; 
+            case EPARGNE -> 0.03;
             case COURANT -> 0.005;
         };
 

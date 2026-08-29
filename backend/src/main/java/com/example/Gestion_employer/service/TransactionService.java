@@ -11,6 +11,8 @@ import com.example.Gestion_employer.Exception.CompteIntrouvableException;
 import com.example.Gestion_employer.Exception.MontantInvalideException;
 import com.example.Gestion_employer.repository.Client2Repository;
 
+import java.util.List;
+
 @Service
 public class TransactionService {
     @Autowired
@@ -31,34 +33,35 @@ public class TransactionService {
         Client client = clientRepository.findByEmail(email)
                 .orElseThrow(() -> new CompteIntrouvableException("Compte Introuvable: "));
 
-        if (client.getSolde() < montant) {
-            throw new MontantInvalideException("Solde insuffisant");
-        }
-
         if (!passwordEncoder.matches(password, client.getPassword())) {
             throw new RuntimeException("Mot de passe incorrect");
         }
 
-        long nouveauSolde = client.getSolde() - montant;
+        long nouveauSolde = client.getSolde() + montant;
         client.setSolde(nouveauSolde);
         clientRepository.save(client);
 
         Transaction transaction = new Transaction();
         transaction.setClient(client);
-        transaction.setType(Transaction.TypeTransaction.RETRAIT);
+        transaction.setType(Transaction.TypeTransaction.DEPOT);
         transaction.setMontant(montant);
         transaction.setSoldeApres(nouveauSolde);
 
         return transactionRepository.save(transaction);
     }
 
-    public Transaction retrait(String numCompte, long montant) {
+    public Transaction retrait(String email, long montant, String password) {
+
         if (montant <= 0) {
             throw new RuntimeException("Le montant doit être supérieur à 0");
         }
 
-        Client client = clientRepository.findByNumCompte(numCompte)
-                .orElseThrow(() -> new RuntimeException("Compte introuvable: " + numCompte));
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Compte introuvable: "));
+
+        if (!passwordEncoder.matches(password, client.getPassword())) {
+            throw new RuntimeException("Mot de passe incorrect");
+        }
 
         if (client.getSolde() < montant) {
             throw new RuntimeException("Solde insuffisant");
@@ -81,22 +84,22 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public Transaction virement(String numCompteSource, String numCompteDestinataire, long montant) {
+    public Transaction virement(String email, String numCompteDestinataire, long montant) {
 
         if (montant <= 0) {
             throw new RuntimeException("Le montant doit être supérieur à 0");
         }
 
-        if (numCompteSource.equals(numCompteDestinataire)) {
-            throw new RuntimeException("Impossible de realiser un virement vers le même compte");
-        }
-
         // Récupérer les deux clients
-        Client compteSource = clientRepository.findByNumCompte(numCompteSource)
+        Client compteSource = clientRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Compte source introuvable"));
 
         Client compteDestinataire = clientRepository.findByNumCompte(numCompteDestinataire)
                 .orElseThrow(() -> new RuntimeException("Compte destinataire introuvable"));
+
+        if ((compteSource.getNumCompte()).equals(numCompteDestinataire)) {
+            throw new RuntimeException("Impossible de realiser un virement vers le même compte");
+        }
 
         if (compteSource.getSolde() < montant) {
             throw new RuntimeException("Solde insuffisant");
@@ -119,7 +122,18 @@ public class TransactionService {
     }
 
     // HISTORIQUE d'un client
-    public java.util.List<Transaction> getHistorique(String email) {
+    public List<Transaction> getHistorique(String email) {
         return transactionRepository.findByClient_Email(email);
+    }
+
+    // 5 historique recent
+    public List<Transaction> get5RecentsHistoriques(String email) {
+        return transactionRepository.findTop5ByClient_EmailOrderByDateTransactionDesc(email);
+    }
+
+    // get Evolution solde
+    public List<Transaction> getEvolutionSolde(String email) {
+        return transactionRepository
+                .findByClient_EmailOrderByDateTransactionAsc(email);
     }
 }

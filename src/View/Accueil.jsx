@@ -11,6 +11,10 @@ function Accueil() {
         navigate('/liste')
     }
 
+    const goToCreateAccount = () => {
+        navigate('/AccueilCreateAccount')
+    }
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -21,6 +25,8 @@ function Accueil() {
     }
 
     const handleLogin = () => {
+        setError('');
+
         api.post(
             'http://localhost:8080/auth/login', authentification)
             // {
@@ -52,7 +58,13 @@ function Accueil() {
             })
 
             .catch(error => {
-                setError('Email ou password incorect')
+                if (error.response?.status === 401) {
+                    setError("Email ou mot de passe incorrect");
+                } else if (error.response?.status === 403) {
+                    setError("Accès refusé ");
+                } else {
+                    setError("Erreur de connexion, réessaye plus tard");
+                }
             })
 
     }
@@ -90,13 +102,20 @@ function Accueil() {
                                 </div>
 
                                 <div className="mt-4 mb-4 col">
+
+                                    {error && (
+                                        <div className="alert alert-danger d-flex align-items-center gap-2 py-2" role="alert">
+                                            <i className="bi bi-exclamation-triangle-fill"></i>
+                                            <span>{error}</span>
+                                        </div>
+                                    )}
+
                                     <button onClick={handleLogin} className="btn btn-primary col-12">Login</button>
-                                    <p className="text-primary text-start mt-3" style={{ fontSize: "13px" }}>Don't have an account? Register here</p>
+                                    <p onClick={goToCreateAccount} className="text-primary ms-2 text-start mt-3" style={{ fontSize: "13px", cursor: "pointer" }}>Don't have an account? Register here</p>
                                 </div>
                             </div>
                             <div className="col-6 mx-auto col-md-4 d-flex align-items-center rounded-circle">
-                                <img src={photo} id="loginPhoto" alt="loginPhoto" className="img-fluid"
-                                    style={{}} />
+                                <img src={photo} id="loginPhoto" alt="loginPhoto" className="img-fluid" />
                             </div>
                         </div>
                     </div>

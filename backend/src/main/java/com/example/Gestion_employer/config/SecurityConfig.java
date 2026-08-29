@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
 
                                                 // Routes publiques (pas besoin d'être connecté)
-                                                .requestMatchers("/auth/login").permitAll()
+                                                .requestMatchers("/auth/login", "/createClient").permitAll()
 
                                                 // Routes réservées à l'ADMIN
                                                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -50,6 +50,7 @@ public class SecurityConfig {
                                                 // Routes réservées au CLIENT
                                                 .requestMatchers("/client/**").hasRole("USER")
 
+                                
                                                 // Tout le reste : authentifié (peu importe le rôle)
                                                 .anyRequest().authenticated())
 
